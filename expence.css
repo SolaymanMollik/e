@@ -1,0 +1,98 @@
+*,
+body,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: #fff;
+}
+
+body {
+  background-color: black;
+  font-family: cursive !important;
+}
+
+.container {
+  max-width: 100%;
+  background-color: #ffffff47;
+  text-align: center;
+  padding: 1rem;
+  margin: 1rem;
+  font-family: cursive;
+  border-radius: 10px;
+}
+
+.for-which {
+  /* padding: 1rem; */
+  margin: 1rem;
+  /* background-color: #ffffff47; */
+  /* display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; */
+  border-radius: 2rem !important;
+}
+.for-which > div {
+  background-color: #ffffff2b;
+  padding: 0.7rem;
+  width: 100%;
+  text-align: center;
+}
+.b-for {
+  text-align: center;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+}
+.inp-area {
+  max-width: 100%;
+  /* background-color: #ffffff47; */
+  margin: 1rem;
+}
+.select-area {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.select-1 {
+  color: #fff;
+  background-color: black;
+  width: 48%;
+  padding: 1rem;
+  border: 2px solid #fff;
+  border-radius: 10px;
+}
+#income-amount {
+  color: #fff;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  background-color: black;
+  font-size: 1rem;
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #fff;
+  border-radius: 10px;
+}
+#pass {
+  color: #fff;
+  margin-bottom: 1rem;
+  background-color: black;
+  font-size: 1rem;
+  width: 40%;
+  height: 3.5rem;
+  padding: 1rem;
+  border: 2px solid #fff;
+  border-radius: 10px;
+}
+.submit-area {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+#sub-btn {
+  width: 58%;
+  height: 3.5rem;
+  display: grid;
+  place-items: center;
+  border: 2px solid white;
+  border-radius: 10px;
+}

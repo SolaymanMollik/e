@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expense calculator</title>
+    <link rel="stylesheet" href="expence.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>Total Asset</h2>
+      <h1 id="totalAsset">0</h1>
+    </div>
+    <div class="for-which">
+      <div>
+        <p>Personal</p>
+        <p class="b-for">0</p>
+      </div>
+      <div>
+        <p>Relative</p>
+        <p class="b-for">0</p>
+      </div>
+      <div>
+        <p>For Allah</p>
+        <p class="b-for">0</p>
+      </div>
+    </div>
+    <div class="inp-area">
+      <div class="select-area">
+        <select class="select-1" id="itemName">
+          <option value="1">For Personal</option>
+          <option value="2">For Relative</option>
+          <option value="3">For Allah</option>
+        </select>
+        <select class="select-1" id="dataType">
+          <option value="e">Expense</option>
+          <option value="i">Income</option>
+        </select>
+      </div>
+      <input
+        type="number"
+        id="income-amount"
+        placeholder="Add The Income or Expense Amount"
+      />
+      <div class="submit-area">
+        <input type="number" id="pass" placeholder="PASS" />
+        <div id="sub-btn">SUBMIT</div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
