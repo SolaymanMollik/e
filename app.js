@@ -3,29 +3,25 @@ let submitBtn = document.getElementById('sub-btn');
 // API কনফিগ
 const BIN_ID = '68ae98da43b1c97be92c8452';
 const BIN_API = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+const BIN_LATEST = `${BIN_API}/latest`;
 const API_KEY = '$2a$10$Uy5Sn6efPq3TetXXz4m8uuxCQpD/p3NdzILOjWvV5zvZKhHhPX6CS';
 
-/**
- * পেজ লোড হলে লোকালস্টোরেজ থেকে ডেটা নাও
- */
-let totalAsset = Number(localStorage.getItem('totalAsset')) || 0;
-let personal =
-  Number(localStorage.getItem('thePersonal')) || Math.round(totalAsset / 3);
-let relative =
-  Number(localStorage.getItem('theRelatiive')) || Math.round(totalAsset / 3);
-let forAllah =
-  Number(localStorage.getItem('forAllah')) || Math.round(totalAsset / 3);
+// প্রাথমিক ভ্যালু
+let totalAsset = 0;
+let personal = 0;
+let relative = 0;
+let forAllah = 0;
 
-updateUI();
+// শুরুতে API থেকে ডেটা লোড
+fetchDataFromAPI();
 
 /**
  * সাবমিট বাটনে ক্লিক
  */
-// submitBtn.addEventListener('click', checkDataType);
 submitBtn.addEventListener('click', () => {
   let passKey = document.getElementById('pass').value;
   if (passKey == '12345') checkDataType();
-  if (passKey != '12345') alert('please give correct pass key');
+  else alert('please give correct pass key');
 });
 
 /**
@@ -38,100 +34,59 @@ function checkDataType() {
   } else {
     itIncome();
   }
-  saveData(); // প্রতি সাবমিটের পর সেভ করার চেষ্টা
+  saveData(); // প্রতি সাবমিটের পর API তে সেভ
 }
 
 /**
  * আগের ভ্যালু নেয়া
  */
 function getPreviousValue(x) {
-  let theTotalAsset = Number(localStorage.getItem('totalAsset')) || totalAsset;
-  let thePersonal = Number(localStorage.getItem('thePersonal')) || personal;
-  let theRelatiive = Number(localStorage.getItem('theRelatiive')) || relative;
-  let theForAllah = Number(localStorage.getItem('forAllah')) || forAllah;
-
   let input = document.getElementById('income-amount').value;
 
-  if (x == 'theTotalAsset') return theTotalAsset;
+  if (x == 'theTotalAsset') return totalAsset;
   if (x == 'input') return Number(input);
-  if (x == 'personal') return thePersonal;
-  if (x == 'forAllah') return theForAllah;
-  if (x == 'relative') return theRelatiive;
+  if (x == 'personal') return personal;
+  if (x == 'forAllah') return forAllah;
+  if (x == 'relative') return relative;
 }
 
 /**
  * Expense হিসাব
  */
 function itExpense() {
-  let currentAsset =
-    getPreviousValue('theTotalAsset') - getPreviousValue('input');
-  let itemName = document.getElementById('itemName').value;
   let inputAmount = getPreviousValue('input');
+  let currentAsset = getPreviousValue('theTotalAsset') - inputAmount;
+  let itemName = document.getElementById('itemName').value;
 
   // total asset update
-  localStorage.setItem('totalAsset', currentAsset);
+  totalAsset = currentAsset;
 
-  // কোন ভাগ থেকে খরচ হলো
+  // কোন ভাগ থেকে খরচ হলো (শুধু ওই ভাগ কমবে)
   if (itemName == '1') {
-    let newPersonal = getPreviousValue('personal') - inputAmount;
-    console.log(getPreviousValue('personal'), inputAmount);
-    localStorage.setItem('thePersonal', newPersonal);
+    personal = getPreviousValue('personal') - inputAmount;
+  } else if (itemName == '2') {
+    relative = getPreviousValue('relative') - inputAmount;
   } else if (itemName == '3') {
-    let newForAllah = getPreviousValue('forAllah') - inputAmount;
-    localStorage.setItem('forAllah', newForAllah);
-  } else {
-    let newRelative = getPreviousValue('relative') - inputAmount;
-    localStorage.setItem('theRelatiive', newRelative);
+    forAllah = getPreviousValue('forAllah') - inputAmount;
   }
 
   updateUI();
 }
 
 /**
- * Expense হিসাব (ফিক্সড)
- */
-// function itExpense() {
-//   let inputAmount = getPreviousValue('input');
-//   let currentAsset = getPreviousValue('theTotalAsset') - inputAmount;
-//   let itemName = document.getElementById('itemName').value;
-
-//   // total asset update
-//   localStorage.setItem('totalAsset', currentAsset);
-
-//   // কোন ভাগ থেকে খরচ হলো (শুধু ওই ভাগ কমবে)
-//   if (itemName == '1') {
-//     let newPersonal = getPreviousValue('personal') - inputAmount;
-//     localStorage.setItem('thePersonal', newPersonal);
-//   } else if (itemName == '2') {
-//     let newRelative = getPreviousValue('relative') - inputAmount;
-//     localStorage.setItem('theRelatiive', newRelative);
-//   } else if (itemName == '3') {
-//     let newForAllah = getPreviousValue('forAllah') - inputAmount;
-//     localStorage.setItem('forAllah', newForAllah);
-//   }
-
-//   updateUI();
-// }
-
-/**
  * Income হিসাব
  */
 function itIncome() {
-  let currentAsset =
-    getPreviousValue('theTotalAsset') + getPreviousValue('input');
   let inputAmount = getPreviousValue('input');
+  let currentAsset = getPreviousValue('theTotalAsset') + inputAmount;
 
   // total asset update
-  localStorage.setItem('totalAsset', currentAsset);
+  totalAsset = currentAsset;
 
   // income ৩ ভাগে ভাগ
-  let newPersonal = getPreviousValue('personal') + Math.round(inputAmount / 3);
-  let newRelative = getPreviousValue('relative') + Math.round(inputAmount / 3);
-  let newForAllah = getPreviousValue('forAllah') + Math.round(inputAmount / 3);
-
-  localStorage.setItem('thePersonal', newPersonal);
-  localStorage.setItem('theRelatiive', newRelative);
-  localStorage.setItem('forAllah', newForAllah);
+  personal = getPreviousValue('personal') + Math.round(inputAmount / 3);
+  relative = getPreviousValue('relative') + Math.round(inputAmount / 3);
+  forAllah = getPreviousValue('forAllah') + Math.round(inputAmount / 3);
 
   updateUI();
 }
@@ -140,39 +95,55 @@ function itIncome() {
  * UI Update ফাংশন
  */
 function updateUI() {
-  document.getElementById('totalAsset').innerText =
-    getPreviousValue('theTotalAsset');
+  document.getElementById('totalAsset').innerText = totalAsset;
   let bFor = document.querySelectorAll('.b-for');
-  bFor[0].innerText = getPreviousValue('personal');
-  bFor[1].innerText = getPreviousValue('relative');
-  bFor[2].innerText = getPreviousValue('forAllah');
+  bFor[0].innerText = personal;
+  bFor[1].innerText = relative;
+  bFor[2].innerText = forAllah;
 }
 
 /**
- * লোকালস্টোরেজ থেকে সব ডেটা অবজেক্ট বানানো
+ * ডেটা অবজেক্ট বানানো
  */
 function getAllData() {
   return {
     id: 'solayman',
-    totalAsset: getPreviousValue('theTotalAsset'),
-    personal: getPreviousValue('personal'),
-    relative: getPreviousValue('relative'),
-    forAllah: getPreviousValue('forAllah'),
+    totalAsset: totalAsset,
+    personal: personal,
+    relative: relative,
+    forAllah: forAllah,
     lastUpdate: new Date().toISOString(),
   };
 }
 
 /**
- * লোকালস্টোরেজে fallback
+ * API থেকে ডেটা ফেচ করে অবজেক্টে সেট করা
  */
-function saveLocal(data) {
+async function fetchDataFromAPI() {
   try {
-    localStorage.setItem('backupData', JSON.stringify(data));
-    console.log('💾 Saved locally:', data);
-    document.getElementById('status').textContent =
-      '💾 Saved locally: ' + JSON.stringify(data, null, 2);
+    let res = await fetch(BIN_LATEST, {
+      method: 'GET',
+      headers: {
+        'X-Master-Key': API_KEY,
+      },
+    });
+
+    if (!res.ok) throw new Error('API থেকে ডেটা আনা যায়নি');
+
+    let result = await res.json();
+    let data = result.record;
+
+    // অবজেক্ট আপডেট
+    totalAsset = data.totalAsset || 0;
+    personal = data.personal || 0;
+    relative = data.relative || 0;
+    forAllah = data.forAllah || 0;
+
+    console.log('📥 API থেকে ডেটা লোড:', data);
+
+    updateUI();
   } catch (err) {
-    console.error('❌ Local save failed:', err);
+    console.error('❌ ফেচ সমস্যা:', err.message);
   }
 }
 
@@ -199,31 +170,14 @@ async function saveData() {
       console.log('✅ Saved to jsonbin:', result);
       document.getElementById('status').textContent =
         '✅ Saved online: ' + JSON.stringify(result, null, 2);
-      saveLocal(data); // সাথে লোকালেও রাখি
     } catch (err) {
       console.error('❌ Error saving to API:', err);
       document.getElementById('status').textContent =
         '❌ API Save Failed: ' + err.message;
-      saveLocal(data);
     }
   } else {
-    console.warn('📴 Offline mode: saving locally');
+    console.warn('📴 Offline mode: cannot save');
     document.getElementById('status').textContent =
-      '📴 Offline - Saved locally.';
-    saveLocal(data);
+      '📴 Offline - Data not saved (no local backup).';
   }
 }
-
-// আবার অনলাইনে এলে লোকাল ব্যাকআপ সিঙ্ক করবে
-window.addEventListener('online', () => {
-  const backup = localStorage.getItem('backupData');
-  if (backup) {
-    try {
-      const obj = JSON.parse(backup);
-      saveData(obj);
-      localStorage.removeItem('backupData');
-    } catch (err) {
-      console.error('❌ Backup Sync Error:', err);
-    }
-  }
-});
