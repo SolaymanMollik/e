@@ -8,7 +8,7 @@ const API_KEY = '$2a$10$Uy5Sn6efPq3TetXXz4m8uuxCQpD/p3NdzILOjWvV5zvZKhHhPX6CS';
 /**
  * পেজ লোড হলে লোকালস্টোরেজ থেকে ডেটা নাও
  */
-let totalAsset = Number(localStorage.getItem('totalAsset')) || 5000;
+let totalAsset = Number(localStorage.getItem('totalAsset')) || 0;
 let personal =
   Number(localStorage.getItem('thePersonal')) || Math.round(totalAsset / 3);
 let relative =
@@ -74,6 +74,7 @@ function itExpense() {
   // কোন ভাগ থেকে খরচ হলো
   if (itemName == '1') {
     let newPersonal = getPreviousValue('personal') - inputAmount;
+    console.log(getPreviousValue('personal'), inputAmount);
     localStorage.setItem('thePersonal', newPersonal);
   } else if (itemName == '3') {
     let newForAllah = getPreviousValue('forAllah') - inputAmount;
@@ -85,6 +86,32 @@ function itExpense() {
 
   updateUI();
 }
+
+/**
+ * Expense হিসাব (ফিক্সড)
+ */
+// function itExpense() {
+//   let inputAmount = getPreviousValue('input');
+//   let currentAsset = getPreviousValue('theTotalAsset') - inputAmount;
+//   let itemName = document.getElementById('itemName').value;
+
+//   // total asset update
+//   localStorage.setItem('totalAsset', currentAsset);
+
+//   // কোন ভাগ থেকে খরচ হলো (শুধু ওই ভাগ কমবে)
+//   if (itemName == '1') {
+//     let newPersonal = getPreviousValue('personal') - inputAmount;
+//     localStorage.setItem('thePersonal', newPersonal);
+//   } else if (itemName == '2') {
+//     let newRelative = getPreviousValue('relative') - inputAmount;
+//     localStorage.setItem('theRelatiive', newRelative);
+//   } else if (itemName == '3') {
+//     let newForAllah = getPreviousValue('forAllah') - inputAmount;
+//     localStorage.setItem('forAllah', newForAllah);
+//   }
+
+//   updateUI();
+// }
 
 /**
  * Income হিসাব
