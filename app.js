@@ -96,6 +96,7 @@ function itIncome() {
  */
 function updateUI() {
   document.getElementById('totalAsset').innerText = totalAsset;
+  document.getElementById('pass').value = '';
   let bFor = document.querySelectorAll('.b-for');
   bFor[0].innerText = personal;
   bFor[1].innerText = relative;
@@ -181,3 +182,4 @@ async function saveData() {
       '📴 Offline - Data not saved (no local backup).';
   }
 }
+
